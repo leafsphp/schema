@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(dirname(__DIR__, 4) . '/vendor/autoload.php')) {
+    require dirname(__DIR__, 4) . '/vendor/autoload.php';
+} else {
+    require dirname(__DIR__) . '/vendor/autoload.php';
+}
+
+$app = sprout()->createApp([
+    'name' => 'Leaf Schema',
+    'version' => '0.1.0',
+    'description' => 'A database schema management tool for Leaf PHP framework',
+]);
+
+$app->register(\Leaf\Commands\DatabaseCommands::commands());
+
+$app->run();
