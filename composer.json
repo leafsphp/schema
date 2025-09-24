@@ -1,0 +1,57 @@
+{
+  "name": "leafs/schema",
+  "description": "Git for your database",
+  "keywords": [
+    "migrations",
+    "schema",
+    "database",
+    "leaf",
+    "php"
+  ],
+  "homepage": "https://leafphp.dev/docs/database/files.html",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael Darko",
+      "email": "mickdd22@gmail.com",
+      "homepage": "https://mychi.netlify.app",
+      "role": "Developer"
+    }
+  ],
+  "bin": [
+    "bin/leaf"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Leaf\\": "src"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "illuminate/support": "*",
+    "leafs/date": "*",
+    "leafs/fs": "*",
+    "symfony/yaml": "*",
+    "leafs/sprout": "*"
+  },
+  "require-dev": {
+    "leafs/alchemy": "*",
+    "friendsofphp/php-cs-fixer": "^3.66"
+  },
+  "scripts": {
+    "alchemy": "./vendor/bin/alchemy setup",
+    "test": "./vendor/bin/alchemy setup --test",
+    "lint": "./vendor/bin/alchemy setup --lint",
+    "actions": "./vendor/bin/alchemy setup --actions"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
+}
