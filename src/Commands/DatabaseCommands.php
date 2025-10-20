@@ -17,6 +17,8 @@ class DatabaseCommands
             DatabaseSeedCommand::class,
             DeleteSchemaCommand::class,
             GenerateSchemaCommand::class,
+            GenerateModelCommand::class,
+            DeleteModelCommand::class,
         ];
     }
 }
