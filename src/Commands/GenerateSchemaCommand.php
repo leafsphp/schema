@@ -53,7 +53,7 @@ class GenerateSchemaCommand extends Command
             $this->comment(
                 $process === 0 ?
                 'Model generated successfully!' :
-                asError('Couldn\'t generate model')
+                '<error>Couldn\'t generate model</error>'
             );
         }
 
@@ -63,7 +63,7 @@ class GenerateSchemaCommand extends Command
             $this->comment(
                 $process === 0 ?
                 'View file generated successfully!' :
-                asError('Couldn\'t generate view file')
+                '<error>Couldn\'t generate view file</error>'
             );
         }
 
@@ -73,7 +73,7 @@ class GenerateSchemaCommand extends Command
             $this->comment(
                 $process === 0 ?
                 'Controller generated successfully!' :
-                asError('Couldn\'t generate controller')
+                '<error>Couldn\'t generate controller</error>'
             );
         }
     }

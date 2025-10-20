@@ -37,7 +37,7 @@ class DeleteSchemaCommand extends Command
         $this->comment("$schema deleted successfully");
 
         if (\Leaf\FS\Directory::isEmpty($dirname = dirname($file))) {
-            if (sprout()->confirm(asError("> $dirname is empty. Delete folder?"))) {
+            if (sprout()->confirm("> $dirname is empty. Delete folder?")) {
                 if (\Leaf\FS\Directory::delete($dirname)) {
                     $this->comment("$dirname deleted successfully!");
                 }
