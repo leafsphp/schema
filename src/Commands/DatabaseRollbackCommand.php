@@ -18,7 +18,7 @@ class DatabaseRollbackCommand extends Command
 
         $migrations = function_exists('AppPaths') ?
             glob(getcwd() . DIRECTORY_SEPARATOR . AppPaths('database') . DIRECTORY_SEPARATOR . '*.yml') :
-            glob(getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
+            glob(getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
 
         foreach ($migrations as $migration) {
             $currentFileName = path($migration)->basename();

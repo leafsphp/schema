@@ -26,7 +26,7 @@ class GenerateSchemaCommand extends Command
 
         $schemaFile = function_exists('DatabasePath') ?
             getcwd() . DIRECTORY_SEPARATOR . DatabasePath("$schema.yml") :
-            getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . "$schema.yml";
+            getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . "$schema.yml";
 
         if (file_exists($schemaFile)) {
             $this->error("$schema already exists");
@@ -36,7 +36,7 @@ class GenerateSchemaCommand extends Command
         if (
             \Leaf\FS\File::create($schemaFile, function () {
                 return file_get_contents(__DIR__ . '/stubs/schema.stub');
-            })
+            }, ['recursive' => true])
         ) {
             $this->comment("$schema schema file created successfully!");
             $this->generateExtraFiles($schema);

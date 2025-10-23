@@ -17,7 +17,7 @@ class DatabaseSeedCommand extends Command
 
         $seeds = function_exists('AppPaths') ?
             glob(getcwd() . DIRECTORY_SEPARATOR . AppPaths('database') . DIRECTORY_SEPARATOR . '*.yml') :
-            glob(getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
+            glob(getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
 
         foreach ($seeds as $seed) {
             $currentFileName = path($seed)->basename();

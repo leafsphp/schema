@@ -18,7 +18,7 @@ class DatabaseMigrationCommand extends Command
 
         $migrations = function_exists('AppPaths') ?
             glob(getcwd() . DIRECTORY_SEPARATOR . AppPaths('database') . DIRECTORY_SEPARATOR . '*.yml') :
-            glob(getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
+            glob(getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
 
         if (empty($migrations)) {
             $this->error("No schema files found.");

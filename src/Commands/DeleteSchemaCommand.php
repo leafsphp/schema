@@ -22,7 +22,7 @@ class DeleteSchemaCommand extends Command
 
         $file = function_exists('DatabasePath') ?
             getcwd() . DIRECTORY_SEPARATOR . DatabasePath("$schema.yml") :
-            getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . "$schema.yml";
+            getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . "$schema.yml";
 
         if (!\Leaf\FS\File::exists($file)) {
             $this->error("$schema doesn't exist!");
