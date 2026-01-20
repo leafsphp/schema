@@ -36,7 +36,7 @@ class Schema
     public static function migrate(string $fileToMigrate): bool
     {
         $data = Yaml::parseFile($fileToMigrate);
-        $tableName = str_replace('.yml', '', path($fileToMigrate)->basename());
+        $tableName = preg_replace('/\.yml$/', '', path($fileToMigrate)->basename());
 
         $currentConnection = $data['connection'] ?? null;
 
@@ -288,7 +288,7 @@ class Schema
     public static function seed(string $fileToSeed): bool
     {
         $data = Yaml::parseFile($fileToSeed);
-        $tableName = str_replace('.yml', '', path($fileToSeed)->basename());
+        $tableName = preg_replace('/\.yml$/', '', path($fileToSeed)->basename());
 
         $seeds = $data['seeds'] ?? [];
         $currentConnection = $data['connection'] ?? null;
@@ -441,7 +441,7 @@ class Schema
     public static function drop(string $fileToDrop): bool
     {
         $data = Yaml::parseFile($fileToDrop);
-        $tableName = str_replace('.yml', '', path($fileToDrop)->basename());
+        $tableName = preg_replace('/\.yml$/', '', path($fileToDrop)->basename());
 
         $currentConnection = $data['connection'] ?? null;
 
@@ -468,7 +468,7 @@ class Schema
      */
     public static function rollback(string $fileToRollback, int $step = 1): bool
     {
-        $tableName = rtrim(path($fileToRollback)->basename(), '.yml');
+        $tableName = preg_replace('/\.yml$/', '', path($fileToRollback)->basename());
 
         if (!storage()->exists(StoragePath("database/$tableName"))) {
             return false;

@@ -23,7 +23,7 @@ class DatabaseResetCommand extends Command
         foreach ($migrations as $migration) {
             $currentFileName = path($migration)->basename();
 
-            if ($fileToMigrate && rtrim($currentFileName, '.yml') !== rtrim($fileToMigrate, '.yml')) {
+            if ($fileToMigrate && preg_replace('/\.yml$/', '', $currentFileName) !== preg_replace('/\.yml$/', '', $fileToMigrate)) {
                 continue;
             }
 

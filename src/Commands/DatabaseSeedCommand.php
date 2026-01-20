@@ -22,7 +22,7 @@ class DatabaseSeedCommand extends Command
         foreach ($seeds as $seed) {
             $currentFileName = path($seed)->basename();
 
-            if ($fileToSeed && rtrim($currentFileName, '.yml') !== rtrim($fileToSeed, '.yml')) {
+            if ($fileToSeed && preg_replace('/\.yml$/', '', $currentFileName) !== preg_replace('/\.yml$/', '', $fileToSeed)) {
                 continue;
             }
 
