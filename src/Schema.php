@@ -322,8 +322,13 @@ class Schema
                 throw new \Exception("The model $seedsModel does not exist");
             }
 
-            for ($i = 0; $i < $count; $i++) {
-                $finalDataToSeed[] = $seedsModel::__seeder();
+            $seedsModelSeeder = $seedsModel::__seeder();
+            if (is_array($seedsModelSeeder) && isset($seedsModelSeeder[0]) && is_array($seedsModelSeeder[0])) {
+                $finalDataToSeed = $seedsModelSeeder;
+            }else{
+                for ($i = 0; $i < $count; $i++) {
+                    $finalDataToSeed[] = $seedsModelSeeder;
+                }
             }
         } else if (is_array($seedsData[0] ?? null)) {
             $finalDataToSeed = $seedsData;
