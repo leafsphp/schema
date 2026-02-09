@@ -36,7 +36,7 @@ class Schema
     public static function migrate(string $fileToMigrate): bool
     {
         $data = Yaml::parseFile($fileToMigrate);
-        $tableName = str_replace('.yml', '', path($fileToMigrate)->basename());
+        $tableName = preg_replace('/\.yml$/', '', path($fileToMigrate)->basename());
 
         $currentConnection = $data['connection'] ?? null;
 
@@ -59,13 +59,7 @@ class Schema
                         $table->increments('id');
                     }
 
-                    foreach ($relationships as $model) {
-                        if (strpos($model, 'App\Models') === false) {
-                            $model = "App\Models\\$model";
-                        }
-
-                        $table->foreignIdFor($model);
-                    }
+                    static::assignRelationships(table: $table, relationships: $relationships);
 
                     foreach ($columns as $columnName => $columnValue) {
                         static::createColumn($table, $columnName, $columnValue);
@@ -109,13 +103,7 @@ class Schema
                         $newRelationships = array_diff($relationships, $lastMigration['relationships'] ?? []);
                         $removedRelationships = array_diff($lastMigration['relationships'] ?? [], $relationships);
 
-                        foreach ($newRelationships as $model) {
-                            if (strpos($model, 'App\Models') === false) {
-                                $model = "App\Models\\$model";
-                            }
-
-                            $table->foreignIdFor($model);
-                        }
+                        static::assignRelationships(table: $table, relationships: $newRelationships);
 
                         foreach ($removedRelationships as $model) {
                             if (strpos($model, 'App\Models') === false) {
@@ -281,6 +269,32 @@ class Schema
     }
 
     /**
+     * Assign table relationships including referential constraints
+     *
+     * @param Blueprint $table
+     * @param array $relationships
+     * @return void
+     */
+    public static function assignRelationships(Blueprint $table, array $relationships): void
+    {
+        foreach ($relationships as $relationship) {
+            $useConstraints = is_array($relationship);
+            $model = $useConstraints ? array_key_first($model) : $relationship;
+
+            if (strpos($model, 'App\Models') === false) {
+                $model = "App\Models\\$model";
+            }
+
+            if ($useConstraints === true) {
+                $foreignColumn = $relationship[$model];
+                $table->foreignIdFor($model, $foreignColumn)->constrained();
+            } else {
+                $table->foreignIdFor($model);
+            }
+        }
+    }
+
+    /**
      * Seed a database table from schema file
      * @param string $fileToSeed The name of the schema file
      * @return bool
@@ -288,7 +302,7 @@ class Schema
     public static function seed(string $fileToSeed): bool
     {
         $data = Yaml::parseFile($fileToSeed);
-        $tableName = str_replace('.yml', '', path($fileToSeed)->basename());
+        $tableName = preg_replace('/\.yml$/', '', path($fileToSeed)->basename());
 
         $seeds = $data['seeds'] ?? [];
         $currentConnection = $data['connection'] ?? null;
@@ -441,7 +455,7 @@ class Schema
     public static function drop(string $fileToDrop): bool
     {
         $data = Yaml::parseFile($fileToDrop);
-        $tableName = str_replace('.yml', '', path($fileToDrop)->basename());
+        $tableName = preg_replace('/\.yml$/', '', path($fileToDrop)->basename());
 
         $currentConnection = $data['connection'] ?? null;
 
@@ -468,7 +482,7 @@ class Schema
      */
     public static function rollback(string $fileToRollback, int $step = 1): bool
     {
-        $tableName = rtrim(path($fileToRollback)->basename(), '.yml');
+        $tableName = preg_replace('/\.yml$/', '', path($fileToRollback)->basename());
 
         if (!storage()->exists(StoragePath("database/$tableName"))) {
             return false;
