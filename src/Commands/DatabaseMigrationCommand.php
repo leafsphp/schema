@@ -28,7 +28,7 @@ class DatabaseMigrationCommand extends Command
         foreach ($migrations as $migration) {
             $currentFileName = path($migration)->basename();
 
-            if ($fileToMigrate && rtrim($currentFileName, '.yml') !== rtrim($fileToMigrate, '.yml')) {
+            if ($fileToMigrate && basename($currentFileName, '.yml') !== basename($fileToMigrate, '.yml')) {
                 continue;
             }
 

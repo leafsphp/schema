@@ -7,8 +7,8 @@ use Leaf\Sprout\Command;
 class DatabaseRollbackCommand extends Command
 {
     protected $signature = 'db:rollback
-        {file : The name of the schema file}
-        {--step|s=1 : The batch to rollback, default is 1}';
+        {file? : Roll back a particular table only}
+        {--step|s=1 : The number of versions to roll back, default is 1}';
     public $description = 'Rollback database to a previous state';
     public $help = 'Rollback database to a previous state, add -s to time-travel to a specific state.';
 
@@ -23,7 +23,7 @@ class DatabaseRollbackCommand extends Command
         foreach ($migrations as $migration) {
             $currentFileName = path($migration)->basename();
 
-            if ($fileToMigrate && rtrim($currentFileName, '.yml') !== rtrim($fileToMigrate, '.yml')) {
+            if ($fileToMigrate && basename($currentFileName, '.yml') !== basename($fileToMigrate, '.yml')) {
                 continue;
             }
 
@@ -41,7 +41,8 @@ class DatabaseRollbackCommand extends Command
             }
         }
 
-        $this->info("Database rollback completed!\n");
+        $this->info('Database rollback completed!');
+        $this->writeln("Your schema files were not changed, so they may now be ahead of your database.\nRun <comment>db:migrate</comment> to re-apply them, or edit them to match the rolled-back state.\n");
 
         return 0;
     }
