@@ -30,6 +30,7 @@ class DatabaseDropCommand extends Command
 
             if (!\Leaf\Schema::drop($migration)) {
                 $this->error("Could not drop $currentFileName");
+
                 return 1;
             }
         }

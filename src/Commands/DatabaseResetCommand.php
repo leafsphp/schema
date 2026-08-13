@@ -31,12 +31,14 @@ class DatabaseResetCommand extends Command
 
             if (!\Leaf\Schema::reset($migration)) {
                 $this->error("Could not reset $currentFileName");
+
                 return 1;
             }
 
             if ($this->option('seed')) {
                 if (!\Leaf\Schema::seed($migration)) {
                     $this->error("Could not seed $currentFileName");
+
                     return 1;
                 }
 

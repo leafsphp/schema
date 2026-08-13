@@ -10,12 +10,12 @@ use Symfony\Component\Yaml\Yaml;
  * Leaf DB Schema [WIP]
  * ---
  * One file to rule them all.
- * 
+ *
  * @version 1.0
  */
 class Schema
 {
-    /**@var \Illuminate\Database\Capsule\Manager $capsule */
+    /** @var \Illuminate\Database\Capsule\Manager $capsule */
     protected static Manager $connection;
 
     /**
@@ -132,7 +132,7 @@ class Schema
             if ($increments !== ($lastMigration['increments'] ?? true)) {
                 if ($increments && !static::$connection::schema($currentConnection)->hasColumn($tableName, 'id')) {
                     $table->increments('id');
-                } else if (!$increments && static::$connection::schema($currentConnection)->hasColumn($tableName, 'id')) {
+                } elseif (!$increments && static::$connection::schema($currentConnection)->hasColumn($tableName, 'id')) {
                     $table->dropColumn('id');
                 }
             }
@@ -170,7 +170,7 @@ class Schema
             foreach ($lastMigration['columns'] ?? [] as $colKey => $colVal) {
                 if (!array_key_exists($colKey, $columns)) {
                     $removedColumns[] = $colKey;
-                } else if (static::getColumnAttributes($colVal) !== static::getColumnAttributes($columns[$colKey])) {
+                } elseif (static::getColumnAttributes($colVal) !== static::getColumnAttributes($columns[$colKey])) {
                     $columnsDiff[] = $colKey;
                     $staticColumns[] = $colKey;
                 } else {
@@ -181,7 +181,7 @@ class Schema
             if ($rememberToken !== ($lastMigration['remember_token'] ?? false)) {
                 if ($rememberToken && !static::$connection::schema($currentConnection)->hasColumn($tableName, 'remember_token')) {
                     $table->rememberToken();
-                } else if (!$rememberToken && static::$connection::schema($currentConnection)->hasColumn($tableName, 'remember_token')) {
+                } elseif (!$rememberToken && static::$connection::schema($currentConnection)->hasColumn($tableName, 'remember_token')) {
                     $table->dropRememberToken();
                 }
             }
@@ -189,7 +189,7 @@ class Schema
             if ($softDeletes !== ($lastMigration['softDeletes'] ?? false)) {
                 if ($softDeletes && !static::$connection::schema($currentConnection)->hasColumn($tableName, 'deleted_at')) {
                     $table->softDeletes();
-                } else if (!$softDeletes && static::$connection::schema($currentConnection)->hasColumn($tableName, 'deleted_at')) {
+                } elseif (!$softDeletes && static::$connection::schema($currentConnection)->hasColumn($tableName, 'deleted_at')) {
                     $table->dropSoftDeletes();
                 }
             }
@@ -197,7 +197,7 @@ class Schema
             if ($timestamps !== ($lastMigration['timestamps'] ?? true)) {
                 if ($timestamps && !static::$connection::schema($currentConnection)->hasColumn($tableName, 'created_at')) {
                     $table->timestamps();
-                } else if (!$timestamps && static::$connection::schema($currentConnection)->hasColumn($tableName, 'created_at')) {
+                } elseif (!$timestamps && static::$connection::schema($currentConnection)->hasColumn($tableName, 'created_at')) {
                     $table->dropTimestamps();
                 }
             }
@@ -280,6 +280,7 @@ class Schema
 
                         if ($columnOptionName === 'default') {
                             $newCol->default($columnOptionValue)->change();
+
                             continue;
                         }
 
@@ -345,7 +346,7 @@ class Schema
             for ($i = 0; $i < $count; $i++) {
                 $finalDataToSeed[] = $seedsModel::__seeder();
             }
-        } else if (is_array($seedsData[0] ?? null)) {
+        } elseif (is_array($seedsData[0] ?? null)) {
             $faker = static::seedFaker($seeds);
 
             foreach ($seedsData as $row) {
@@ -396,6 +397,7 @@ class Schema
     public static function reset(string $fileToReset): bool
     {
         static::drop($fileToReset);
+
         return static::migrate($fileToReset);
     }
 
@@ -528,15 +530,19 @@ class Schema
         switch ($rootName) {
             case 'faker':
                 $target = $faker;
+
                 break;
             case 'tick':
                 $target = tick(...($rootArgs ?? []));
+
                 break;
             case 'randomString':
                 $target = \Illuminate\Support\Str::random($rootArgs[0] ?? 10);
+
                 break;
             case 'hash':
                 $target = \Leaf\Helpers\Password::hash($rootArgs[0] ?? 'password');
+
                 break;
             default:
                 // not a token ('@company.com', ...): treat as a literal value
@@ -598,7 +604,7 @@ class Schema
 
             if ($char === '(' || $char === '[') {
                 $depth++;
-            } else if ($char === ')' || $char === ']') {
+            } elseif ($char === ')' || $char === ']') {
                 $depth--;
             }
 
@@ -751,7 +757,7 @@ class Schema
 
         if (is_string($value)) {
             $attributes['type'] = $value;
-        } else if (is_array($value)) {
+        } elseif (is_array($value)) {
             $attributes = array_merge($attributes, $value);
         }
 
@@ -772,7 +778,7 @@ class Schema
                 );
 
                 unset($columnValue['length']);
-            } else if ($columnValue['type'] === 'enum' || $columnValue['type'] === 'set') {
+            } elseif ($columnValue['type'] === 'enum' || $columnValue['type'] === 'set') {
                 $returnedColumn = $table->{$columnValue['type']}(
                     $columnName,
                     $columnValue['values'] ?? []

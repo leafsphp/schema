@@ -28,6 +28,7 @@ class DatabaseSeedCommand extends Command
 
             if (!\Leaf\Schema::seed($seed)) {
                 $this->error("Could not seed $currentFileName");
+
                 return 1;
             }
 

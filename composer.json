@@ -34,13 +34,13 @@
     "illuminate/database": "*",
     "illuminate/support": "*",
     "fakerphp/faker": "*",
-    "leafs/date": "*",
-    "leafs/fs": "*",
+    "leafs/date": "^5.0",
+    "leafs/fs": "^5.0",
     "symfony/yaml": "*",
-    "leafs/sprout": "*"
+    "leafs/sprout": "^5.0"
   },
   "require-dev": {
-    "leafs/alchemy": "v5.x-dev",
+    "leafs/alchemy": "^5.0",
     "friendsofphp/php-cs-fixer": "*",
     "pestphp/pest": "*"
   },

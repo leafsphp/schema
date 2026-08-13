@@ -26,11 +26,13 @@ class DeleteSchemaCommand extends Command
 
         if (!\Leaf\FS\File::exists($file)) {
             $this->error("$schema doesn't exist!");
+
             return 1;
         }
 
         if (!\Leaf\FS\File::delete($file)) {
             $this->error("Couldn't delete $file, you might need to remove it manually.");
+
             return 1;
         }
 

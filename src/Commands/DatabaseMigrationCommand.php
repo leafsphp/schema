@@ -21,7 +21,8 @@ class DatabaseMigrationCommand extends Command
             glob(getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . '*.yml');
 
         if (empty($migrations)) {
-            $this->error("No schema files found.");
+            $this->error('No schema files found.');
+
             return 1;
         }
 
@@ -38,12 +39,14 @@ class DatabaseMigrationCommand extends Command
 
             if (!\Leaf\Schema::migrate($migration)) {
                 $this->error("Could not migrate $currentFileName");
+
                 return 1;
             }
 
             if ($this->option('seed')) {
                 if (!\Leaf\Schema::seed($migration)) {
                     $this->error("Could not seed $currentFileName");
+
                     return 1;
                 }
 
@@ -66,7 +69,7 @@ class DatabaseMigrationCommand extends Command
             if ($connection['driver'] === 'sqlite') {
                 if (!file_exists($connection['database'])) {
                     \Leaf\FS\File::create($connection['database'], null, [
-                        'recursive' => true
+                        'recursive' => true,
                     ]);
                 }
 
@@ -84,7 +87,7 @@ class DatabaseMigrationCommand extends Command
                     'username' => $connection['username'],
                     'password' => $connection['password'],
                     'port' => $connection['port'],
-                ]
+                ],
             ]);
 
             if ($connection['driver'] === 'pgsql') {

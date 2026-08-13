@@ -28,6 +28,7 @@ class GenerateModelCommand extends Command
 
         if (file_exists($file)) {
             $this->error('Model already exists');
+
             return 1;
         }
 
