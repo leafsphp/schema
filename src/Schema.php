@@ -15,7 +15,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Schema
 {
-    /** @var \Illuminate\Database\Capsule\Manager $capsule */
+    /** @var \Illuminate\Database\Capsule\Manager */
     protected static Manager $connection;
 
     /**
