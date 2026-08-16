@@ -311,6 +311,10 @@ class Schema
         $data = Yaml::parseFile($fileToSeed);
         $tableName = basename($fileToSeed, '.yml');
 
+        if (!isset($data['seeds'])) {
+            return true;
+        }
+
         $seeds = $data['seeds'] ?? [];
         $currentConnection = $data['connection'] ?? null;
 
@@ -334,7 +338,7 @@ class Schema
             );
         }
 
-        if ($seedsModel) {
+        if ($seedsModel && (int) $count > 0) {
             if (strpos($seedsModel, 'App\Models') === false) {
                 $seedsModel = "App\Models\\$seedsModel";
             }

@@ -469,3 +469,39 @@ YAML);
     expect(fn () => \Leaf\Schema::seed($file))
         ->toThrow(Exception::class, 'Could not parse seed token');
 });
+
+test('a schema with no seeds block seeds nothing', function () {
+    // this is the shipped password_resets.yml shape — before the guard,
+    // seeding guessed App\Models\PasswordReset from the table name and
+    // threw on every fresh `db:migrate --seed`
+    $file = schemaFile('password_resets', <<<'YAML'
+increments: false
+timestamps: false
+
+columns:
+  email:
+    type: string
+  token: string
+YAML);
+
+    \Leaf\Schema::migrate($file);
+
+    expect(\Leaf\Schema::seed($file))->toBeTrue();
+    expect(\Illuminate\Database\Capsule\Manager::table('password_resets')->get())->toHaveCount(0);
+});
+
+test('seeds with count zero seed nothing even with a model', function () {
+    $file = schemaFile('logs', <<<'YAML'
+columns:
+  message: string
+seeds:
+  count: 0
+  model: MissingModel
+YAML);
+
+    \Leaf\Schema::migrate($file);
+
+    // the model doesn't exist, but with nothing to seed that must not matter
+    expect(\Leaf\Schema::seed($file))->toBeTrue();
+    expect(\Illuminate\Database\Capsule\Manager::table('logs')->get())->toHaveCount(0);
+});
